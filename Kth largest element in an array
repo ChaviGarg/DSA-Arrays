@@ -1,0 +1,70 @@
+Naive Approach:- Apply merge sort and get the element O(n log n) 
+Arrays.sort(nums)
+return nums[len-k];
+
+Heap Approach:- use min heap for largest and max heap for kth smallest
+
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for(int i=0; i < nums.length; i++){
+            pq.offer(nums[i]);
+            if(pq.size() > k)
+                pq.poll();
+        }
+        return pq.peek();
+    }
+}
+// Time Complexity : O(n log k)
+// Space : O(n)
+
+
+***************************Quick Select Approach**********************************
+
+Explanation:- In quicksort, we recursively sort both branches, leading to best-case O(n log n) time. However, when doing selection, we already know which partition our desired element lies in, since the pivot is in its final sorted position, with all those preceding it in an unsorted order and all those following it in an unsorted order.
+Therefore, a single recursive call locates the desired element in the correct partition, and we build upon this for quickselect:
+
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        
+        return quickSelect(nums, 0, nums.length-1, nums.length-k);
+    }
+    private int quickSelect(int[] nums, int low, int high, int k){
+        
+        int pivotIndex = partition(nums, low, high);
+        if(pivotIndex == k)
+            return nums[k];
+        else if(pivotIndex > k)
+            return quickSelect(nums, 0, pivotIndex-1, k);
+        else
+            return quickSelect(nums, pivotIndex+1, high, k);
+    }
+    private int partition(int[] nums, int low, int high){
+        
+        int pivot = nums[low];
+        int i=low, j = high;
+        while(i < j){
+            while(i < nums.length && nums[i] <= pivot){
+                i++;
+            }
+            while(j < nums.length && nums[j] > pivot){
+                j--;
+            }
+            if(i < j)
+                swap(nums, i, j);
+        }
+        swap(nums, low, j);
+        return j;
+    }
+    private void swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+
+// Time Complexity : O(n) best case
+Like quicksort, the quickselect has good average performance, but is sensitive to the pivot that is chosen. 
+If good pivots are chosen, meaning ones that consistently decrease the search set by a given fraction, then the search set decreases in size exponentially and by induction (or summing the geometric series) one sees that performance is linear, as each step is linear and the overall time is a constant times this (depending on how quickly the search set reduces). However, if bad pivots are consistently chosen, such as decreasing by only a single element each time, then worst-case performance is quadratic: O(n2).
+This occurs for example in searching for the maximum element of a set, using the first element as the pivot, and having sorted data.
