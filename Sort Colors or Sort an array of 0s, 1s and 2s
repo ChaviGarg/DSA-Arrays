@@ -1,0 +1,35 @@
+// Approach-1 : Take three variables which will count number of 0's, 1's and 2's then put all 0’s first, then 1’s and lastly 2’s in the array.
+Time : O(n), Space : O(1)
+
+// Approach-2 : Duch National Flag Algo or 3 way partitioning
+
+class Solution {
+    public void sortColors(int[] nums) {
+        
+        int l = 0, m = 0, h = nums.length-1;
+        
+        while(m <= h){
+            if(nums[m] == 0){
+                swap(nums, m, l);
+                l++; m++;
+            }
+            else if(nums[m] == 1)
+                m++;
+            else if(nums[m] == 2){
+                swap(nums, m, h);
+                h--;
+            }
+            
+        }    
+    }
+    private void swap(int nums[], int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+
+// Time Complexity : O(n)
+// Space Complexity : O(1)
+
+Similarly we can do to segregate 0's and 1's in the array also
