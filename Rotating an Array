@@ -1,0 +1,38 @@
+
+Naive Approach:- Rotate one by one
+
+leftRotate(arr[], d, n)
+start
+  For i = 0 to i < d
+    Left rotate all elements of arr[] by one
+end
+
+Time : O(n*d)   Space: O(1)
+
+
+Naive Approach2:-  use temp array of size d to store the values and then insert these values at the back.
+
+//Time : O(n),  space: O(d)
+
+
+************************************* Optimised Approach (using reversal algorithm)************************************************
+
+class Solution {
+    void leftRotate(int[] arr, int n, int d) {
+        // code here
+        reverse(arr, 0, d-1);
+        reverse(arr, d, n-1);
+        reverse(arr, 0, n-1);
+    }
+    private void reverse(int[] arr, int i, int j){
+        while(i < j){
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i++;  j--;
+        }
+    }
+}
+
+// Time Complexity : O(n)
+// Space Complexity : O(1)
